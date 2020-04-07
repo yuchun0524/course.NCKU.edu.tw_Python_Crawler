@@ -9,11 +9,11 @@
 2. xpath: 節點搜尋
 
 ### 一些注意的點
-1. 以下兩段程式碼效果不同: 好像不能連續搜尋(我沒有仔細查，不過用起來是這樣)
+1. 以下兩段程式碼效果不同: xpath 好像不能連續搜尋(我沒有仔細查，不過用起來是這樣)
 ```python=
 browser = browser.find_elements_by_xpath("//table[@id = 'A9-table']/tbody/tr/td")
 ```
-* 所以底下的第一句如同不存在，第二聚會搜尋到整篇的 \<td>
+* 所以底下的第一句如同不存在，第二句會搜尋到整篇的 \<td>
 ```python=
 browser = browser.find_elements_by_xpath("//table[@id = 'A9-table']/tbody/tr")
 browser = browser.find_elements_by_xpath("//td")
