@@ -9,14 +9,15 @@
 2. xpath: 節點搜尋
 
 ### 一些注意的點
-1. 以下兩段程式碼效果不同: xpath 好像不能連續搜尋(我沒有仔細查，不過用起來是這樣)
+1. 先搜尋某些節點，再搜尋下一個節點的方法: xpath 好像不能連續搜尋，.find_elements_by_xxx 這種才可以(我沒有仔細查，不過用起來是這樣)
 ```python=
 browser = browser.find_elements_by_xpath("//table[@id = 'A9-table']/tbody/tr/td")
 ```
-* 所以底下的第一句如同不存在，第二句會搜尋到整篇的 \<td>
+* 拆解上面程式碼的方法: 不能用第二句，會搜尋到整篇的 \<td> (所以底下的第一句如同不存在)，解決辦法是用第三句
 ```python=
 browser = browser.find_elements_by_xpath("//table[@id = 'A9-table']/tbody/tr")
-browser = browser.find_elements_by_xpath("//td")
+wrong = browser.find_elements_by_xpath("//td")
+correct = browser.find_elements_by_css_selector('a')
 ```
 2. 當點選頁面之後，回到上一頁，原本搜尋的東西都不能用了，要重新搜尋
 ```python=
