@@ -1,6 +1,8 @@
 from selenium import webdriver
-import time
+import csv
 
+f_csv = open('ncku_course.csv','w')
+writer = csv.writer(f_csv)
 f = open('ncku_course_data','w')
 
 profile = webdriver.FirefoxProfile()
@@ -22,23 +24,43 @@ for i in range(3):
     courses_elements = browser.find_elements_by_xpath("//table[@id = 'A9-table']/tbody/tr/td")
 
     course_list = [depart_name]
-    for i,element in enumerate(courses_elements):
-        if(i%10 == 0):
-            continue
-        course_list.extend(element.text.split())
-#        course_list.append(element.text)
 
+    """ used for write csv (start)"""
+    for i,element in enumerate(courses_elements):
+        if (i%10 == 0): # discard first one
+            continue
+        elif (i%10 == 9):   # the last one is href, it need to be drawed out by css_selector and then use get_attribute
+            href = element.find_elements_by_css_selector('a')
+            course_list.append(href[0].get_attribute('href'))  
+        else:   # we don't need the text of the last one (when i%10 == 9)
+            course_list.append(element.text.split())
+        if (i%10 == 9):    # last one
+            writer.writerow(course_list)
+            course_list = [depart_name]
+    """ used for write csv (end) """
+
+    """ used for write txt file
+    for i,element in enumerate(courses_elements):
+        if (i%10 == 0): # discard first one
+            continue
+        elif (i%10 == 9):   # the last one is href, it need to be drawed out by css_selector and then use get_attribute
+            href = element.find_elements_by_css_selector('a')
+            href = [href[0].get_attribute('href')] # convert from string to list, because .extend() accept list
+            course_list.extend(href)
+        else:   # we don't need the text of the last one (when i%10 == 9)
+            course_list.extend(element.text.split())
         if (i%10 == 9):    # last one
             for j,item in enumerate(course_list):
-                if (j == len(course_list)-3):   # we don't need the last two items
+                if (j == len(course_list)-1):
                     f.write(item + '\n')
-                    break
+                    break 
                 else:
                     f.write(item + ',')
             course_list = [depart_name]
-
+    """
     browser.back()
 
+f_csv.close()
+# f.close()
 browser.quit()
-f.close()
 
