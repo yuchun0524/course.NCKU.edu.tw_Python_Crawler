@@ -28,16 +28,29 @@ for i in range(3):
     """ used for write csv (start)"""
     for i,element in enumerate(courses_elements):
         if (i%10 == 0): # discard first one
-            continue       
+            continue
+        elif (i%10 == 1):       
+            oldlist = element.text.split()
+            if len(oldlist) == 3:
+                dept_seq = oldlist[0]
+                class_seq = oldlist[1]
+                attr_seq = oldlist[2]
+                course_list.append(dept_seq)  #系號-序號
+            else:
+                class_seq = oldlist[0]
+                attr_seq = oldlist[1]
+                course_list.append("")
+            course_list.append(class_seq) #課程碼-分班碼
+            course_list.append(attr_seq)  #屬性碼
         elif (i%10 == 5):
             oldlist = element.text.split()
-            units = oldlist[0:1]
-            required = oldlist[1:2]
-            course_list.append(units)
-            course_list.append(required)
+            units = oldlist[0]
+            required = oldlist[1]
+            course_list.append(units)    #學分
+            course_list.append(required) #必選修
         elif (i%10 == 8):
             oldlist = element.text.split()
-            time = oldlist[0:1]
+            time = oldlist[0]
             if len(oldlist) > 1:
                 location = oldlist[1:]
                 course_list.append(time)
