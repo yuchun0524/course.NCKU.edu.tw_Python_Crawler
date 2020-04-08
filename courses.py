@@ -1,12 +1,12 @@
 from selenium import webdriver
 import csv
 
-f_csv = open('ncku_course.csv','w')
+f_csv = open('ncku_course.csv','w', newline='')
 writer = csv.writer(f_csv)
-f = open('ncku_course_data','w')
+#f = open('ncku_course_data','w')
 
 profile = webdriver.FirefoxProfile()
-profile.set_preference('intl.accept_languages', 'zh-CN')    # query chinese page
+profile.set_preference('intl.accept_languages', 'zh-TW')    # query chinese page
 browser = webdriver.Firefox(firefox_profile = profile)
 
 browser.get('https://course.ncku.edu.tw/index.php?c=qry_all') 
@@ -28,7 +28,23 @@ for i in range(3):
     """ used for write csv (start)"""
     for i,element in enumerate(courses_elements):
         if (i%10 == 0): # discard first one
-            continue
+            continue       
+        elif (i%10 == 5):
+            oldlist = element.text.split()
+            units = oldlist[0:1]
+            required = oldlist[1:2]
+            course_list.append(units)
+            course_list.append(required)
+        elif (i%10 == 8):
+            oldlist = element.text.split()
+            time = oldlist[0:1]
+            if len(oldlist) > 1:
+                location = oldlist[1:]
+                course_list.append(time)
+                course_list.append(location)
+            else:
+                course_list.append(time)
+                course_list.append("")
         elif (i%10 == 9):   # the last one is href, it need to be drawed out by css_selector and then use get_attribute
             href = element.find_elements_by_css_selector('a')
             course_list.append(href[0].get_attribute('href'))  
@@ -59,8 +75,6 @@ for i in range(3):
             course_list = [depart_name]
     """
     browser.back()
-
 f_csv.close()
 # f.close()
 browser.quit()
-

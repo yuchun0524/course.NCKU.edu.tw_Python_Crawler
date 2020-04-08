@@ -28,10 +28,10 @@ depart[0].click()
 browser.back()
 depart = browser.find_elements_by_xpath("//*[contains(text(), '%s')]" % depart_list[i])
 ```
-3. 解決出現英文頁面問題: 要求中文 'zh-CN'
+3. 解決出現英文頁面問題: 要求中文 'zh-TW'
 ```python=
 profile = webdriver.FirefoxProfile()
-profile.set_preference('intl.accept_languages', 'zh-CN')    # query chinese page
+profile.set_preference('intl.accept_languages', 'zh-TW')    # query chinese page
 browser = webdriver.Firefox(firefox_profile = profile)
 ```
 
