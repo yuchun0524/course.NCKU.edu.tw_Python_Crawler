@@ -37,7 +37,7 @@ browser = webdriver.Firefox(firefox_profile = profile)
 4. csv檔亂碼問題，需要用以下程式碼來解決
 ```python=
 import codecs
-f_csv = codecs.open('ncku_course.csv', 'w', encoding="utf_8_si
+f_csv = codecs.open('ncku_course.csv', 'w', encoding="utf_8_si)
 ```
 
 ### 參考資料(紀錄幾個不錯的網站，但不見得有用到)
